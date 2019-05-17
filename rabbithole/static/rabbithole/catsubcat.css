@@ -1,0 +1,113 @@
+/* CAT & SUBCAT TILES */
+
+.tile {
+  display: inline-flex;
+  height: 200px;
+  width: 200px;
+  border: 3px solid black;
+  padding: 5px;
+  margin: 25px;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 5px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+  background-color: white;
+  color: black;
+  text-decoration: none;
+}
+
+.tile:hover {
+  background-color: black;
+  color: white;
+}
+
+/* SUGGESTION TILE */
+
+.suggestiontile {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+  height: 200px;
+  width: 732px;
+  border: 3px solid black;
+  padding: 5px;
+  margin: 25px;
+  background-color: white;
+  cursor: pointer;
+  position: absolute;
+}
+
+.suggestiontile:hover {
+  background-color: black;
+  color: white;
+}
+
+.suggestiontile:hover > .submitbutton {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+.suggestiontile:hover > input {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+.suggestiontile:hover > .closetile {
+  color: white;
+}
+
+.suggestiontile:hover > input::placeholder {
+  color: white;
+}
+
+.suggestionbox {
+  width: 500px;
+  height: 40px;
+  padding-left: 15px;
+  margin-right: 10px;
+  border: none;
+  border-bottom: 2px solid black;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  font-style: italic;
+  background-color: white;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+
+.suggestiontile > input::placeholder {
+  color: black;
+}
+
+.submitbutton {
+  width: 44px;
+  height: 44px;
+  border: 2px solid black;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.closetile {
+  position: absolute;
+  top: 4px;
+  right: 12px;
+  font-size: 25px;
+  transform: rotate(45deg);
+  color: black;
+  font-weight: bolder;
+  cursor: pointer;
+}
