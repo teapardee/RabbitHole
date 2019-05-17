@@ -1,0 +1,99 @@
+{% extends "rabbithole/base.html" %} {% block body %} {% load humanize %}
+
+<!-- Intent: Move to seperate js file -->
+
+<script type="text/javascript">
+  function configureTimeout(i, cat) {
+    setTimeout(function() {
+      div = document.createElement('a');
+      div.setAttribute('class', 'tile');
+
+      var href_path = 'http://localhost:8000/' + cat[i] + '/';
+
+      div.setAttribute('href', href_path);
+      div.innerHTML = cat[i];
+      document.body.appendChild(div);
+    }, i * 100);
+  }
+
+  // Temporary for testing functionality - Intent: scrape database 
+
+  for (var i = 0; i < 50; i++) {
+    var cat = [
+      'auto',
+      'film',
+      'animation',
+      'music',
+      'animals',
+      'sports',
+      'short movies',
+      'travel',
+      'gaming',
+      'videoblogging',
+      'people',
+      'comedy',
+      'entertainment',
+      'news',
+      'politics',
+      'howto',
+      'style',
+      'education',
+      'science',
+      'technology',
+      'activism',
+      'movies',
+      'animation',
+      'adventure',
+      'classics',
+      'comedy',
+      'documentary',
+      'drama',
+      'family',
+      'foreign',
+      'horror',
+      'sci-fi',
+      'thriller',
+      'shorts',
+      'shows',
+      'trailers'
+    ];
+
+    configureTimeout(i, cat);
+  }
+</script>
+
+<div id="button" class="tile">+</div>
+<div id="addbox" class="suggestiontile">
+  <form action="http://localhost:8000/cat_submission=success/" method="POST">
+    {% csrf_token %}
+    <input
+      type="text"
+      class="suggestionbox"
+      name="cat_submission"
+      placeholder="submit categories here . . ."
+    />
+    <input id="submit" class="submitbutton" type="submit" value="+"/>
+  </form>
+  <div id="closetile" class="closetile">+</div>
+</div>
+
+<!-- Intent: Move to seperate js file -->
+
+<script type="text/javascript">
+  document.getElementById('button').addEventListener('click', function() {
+    document.querySelector('.suggestiontile').style.display = 'inline-flex';
+    document.querySelector('.tile').style.display = 'none';
+  });
+
+ document.getElementById('closetile').addEventListener('click', function() {
+    document.querySelector('.suggestiontile').style.display = 'none';
+    document.querySelector('.tile').style.display = 'inline-flex';
+  });
+  
+  document.getElementById('submit').addEventListener('click', function() {
+    document.querySelector('.suggestiontile').style.display = 'none';
+    document.querySelector('.tile').style.display = 'inline-flex';
+  });
+</script>
+
+{% endblock %}

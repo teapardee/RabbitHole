@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'rabbithole/catsubcat.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'rabbithole/channellist.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'rabbithole/header.css' %}"
+    />
+  <link rel="icon" type="image/png" href="{% static 'rabbithole/favicon.png' %}"
+  </head>
+
+  <body>
+    <div class="header-wrapper">
+      <a href="/" class="header-title">RABBIT HOLE</a>
+    </div>
+
+    {% block body %} {% endblock %}
+  </body>
+</html>

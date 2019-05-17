@@ -1,0 +1,104 @@
+{% extends "rabbithole/base.html" %} {% block body %}
+
+<div class="body">
+
+  <!-- Intent: Move to seperate js file -->
+  <script type="text/javascript">
+
+    function configureTimeout(i, cat) {
+
+        setTimeout(function() {
+
+    		var string = cat;
+    			substring = ' <br> & <br> ';
+    			original_cat = "{{original_cat}}";
+
+    		if (cat[i] == undefined) {
+    			var sub_cat = '#';
+    		} else if (string.includes(substring)) {
+    			var sub_cat = cat.replace(substring,'and');
+    		} else {
+    			var sub_cat = cat.replace(" ", "");
+    		}
+
+    		var href_path = "http://localhost:8000/" + original_cat + "/" + sub_cat + "/";
+    		console.log(href_path);
+
+    		div = document.createElement('a');
+    		div.setAttribute("class", "tile");
+    		div.setAttribute("href", href_path);
+    		div.innerHTML = cat;
+    		document.body.appendChild(div);
+
+        }, i* 100);
+    }
+
+
+    for (var i = 0; i < 8; i++) {
+    	var string = JSON.stringify({{ unique_sub_cat_json|safe }});
+        var cat_array = JSON.parse(string);
+        var sub_cat_txt = cat_array;
+
+    	var string = sub_cat_txt[i];
+    	var substring = 'and';
+
+        	if (sub_cat_txt[i] == undefined) {
+    			var cat = '#';
+    		} else if (string.includes(substring)) {
+    			var cat = sub_cat_txt[i].replace(substring,' <br> & <br> ');
+    		} else {
+    			var cat = sub_cat_txt[i];
+    		}
+
+        configureTimeout(i, cat);
+
+     }
+  </script>
+
+</div>
+
+<div id="button" class="tile">+</div>
+<div id="addbox" class="suggestiontile">
+  <form id="form_id" onsubmit="urldispatch()" method="POST">
+    <script>
+      function urldispatch() {
+        var success = '/sub_cat_submission=success/';
+        var original_cat = '{{original_cat}}';
+        var concat_path = original_cat.concat('', success);
+        var final = 'http://localhost:8000/' + concat_path;
+        document.getElementById('form_id').action = final;
+        console.log(final);
+      }
+    </script>
+    {% csrf_token %}
+    <input
+      type="text"
+      class="suggestionbox"
+      name="sub_cat_submission"
+      placeholder="submit sub-categories here . . ."
+    />
+    <input id="submit" class="submitbutton" type="submit" value="+" />
+    <iframe style="display:none" name="hiddeniframe"></iframe>
+  </form>
+  <div id="closetile" class="closetile">+</div>
+</div>
+
+<!-- Intent: Move to seperate js file -->
+<script type="text/javascript">
+  document.getElementById('button').addEventListener('click', function() {
+    document.querySelector('.suggestiontile').style.display = 'inline-flex';
+    document.querySelector('.tile').style.display = 'none';
+  });
+
+  document.getElementById('closetile').addEventListener('click', function() {
+    document.querySelector('.suggestiontile').style.display = 'none';
+    document.querySelector('.tile').style.display = 'inline-flex';
+  });
+
+  document.getElementById('submit').addEventListener('click', function() {
+    document.querySelector('.suggestiontile').style.display = 'none';
+    document.querySelector('.tile').style.display = 'inline-flex';
+  });
+</script>
+
+{% endblock %}

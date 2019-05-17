@@ -1,0 +1,117 @@
+{% extends "rabbithole/base.html" %} {% block body %} {% load humanize %}
+
+<!-- Intent: Eliminate need for header classes? -->
+<div class="headercontainer">
+  <div class="headerone"></div>
+  <div class="headertwo headertext">channel</div>
+  <div class="headerthree headertext">uploads</div>
+  <div class="headerfour headertext">subscribers</div>
+  <div class="headerfive headertext">viewcount</div>
+</div>
+
+<form
+  class="suggestioncontainer"
+  onsubmit="urldispatchchannel()"
+  id="form_channel"
+  method="POST"
+>
+  {% csrf_token %}
+
+  <!-- Intent: Move to seperate js file -->
+  <script>
+    function urldispatchchannel() {
+      var success = '/channel_submission=success/';
+      var original_cat = '{{original_cat}}';
+      var original_sub_cat = '{{original_sub_cat}}';
+      var final =
+        'http://localhost:8000/' +
+        original_cat +
+        '/' +
+        original_sub_cat +
+        success;
+      document.getElementById('form_channel').action = final;
+      console.log(final);
+    }
+  </script>
+
+  <input
+    type="text"
+    class="suggestionboxtwo"
+    name="channel_submission"
+    placeholder="submit channel URLs here . . ."
+  />
+
+  <div class="buttoncontainer">
+    <input id="submit" class="submitbuttontwo" type="submit" value="+" />
+  </div>
+
+  <iframe style="display:none" name="hiddeniframe"></iframe>
+</form>
+
+{% for channel in channels %}
+<div class="listbox">
+  <div id="preview" class="listboxuploads">
+    <div class="previewbtn"></div>
+    <img src="{{ channel.thumbnail }}" class="thumbnail" alt="#" />
+  </div>
+  <div class="listboxmaster">
+    <a
+      class="listboxchannel listboxtext"
+      style="font-size: 13px;"
+      href="https://www.youtube.com/user/{{ channel.customUrl }}"
+      >{{ channel.channel_name }}
+    </a>
+    <div id="flagchannel" class="flagchannel">[flag]</div>
+  </div>
+
+  <div class="listboxsubs listboxtext">{{ channel.uploads }}</div>
+  <div class="listboxviews listboxtext">{{ channel.subscribers }}</div>
+  <div class="listboxupvotes listboxtext">{{ channel.viewcount }}</div>
+</div>
+
+<div id="{{channel.channel_name}}" class="modal">
+  <div class="modalcontent listboxtext">
+    <div style="margin:20px">most recent upload</div>
+    <iframe
+      width="640"
+      height="390"
+      frameborder="0"
+      class="stop-video"
+      title="YouTube video player"
+      type="text/html"
+      enablejsapi="1"
+      src="http://www.youtube.com/embed?max-results=1&rel=0&listType=user_uploads&list={{channel.customUrl}}&enablejsapi=1"
+    ></iframe>
+    <div class="close">+</div>
+  </div>
+</div>
+
+{% endfor %}
+
+<!-- Intent: Move to seperate js file -->
+<!-- Issue: Channel preview broken - video is always first channel's video -->
+<script>
+  const element = document.querySelectorAll('.listboxuploads');
+  if (element) {
+    element.forEach(function(el) {
+      el.addEventListener('click', function() {
+        console.log(el);
+        document.querySelector('.modal').style.display = 'flex';
+      });
+    });
+  }
+
+  document.querySelector('.close').addEventListener('click', function() {
+    document
+      .querySelector('.stop-video')
+      .contentWindow.postMessage(
+        '{"event":"command","func":"' + 'stopVideo' + '","args":""}',
+        '*'
+      );
+    document.querySelector('.modal').style.display = 'none';
+  });
+
+
+</script>
+
+{% endblock %}
